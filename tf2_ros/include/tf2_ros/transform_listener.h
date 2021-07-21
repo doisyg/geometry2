@@ -149,7 +149,7 @@ private:
 
   /// Callback function for ros message subscriptoin
   TF2_ROS_PUBLIC
-  void subscription_callback(tf2_msgs::msg::TFMessage::SharedPtr msg, bool is_static);
+  void subscription_callback(tf2_msgs::msg::TFMessage::ConstSharedPtr msg, bool is_static);
 
   // ros::CallbackQueue tf_message_callback_queue_;
   using thread_ptr =
