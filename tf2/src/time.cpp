@@ -30,38 +30,12 @@
 
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
-#include "rcutils/snprintf.h"
-#include "rcutils/strerror.h"
 #include "tf2/time.h"
 
 std::string tf2::displayTimePoint(const tf2::TimePoint & stamp)
 {
-  const char * format_str = "%.6f";
-  double current_time = tf2::timeToSec(stamp);
-
-  // Determine how many bytes to allocate for the string. If successful, buff_size does not count
-  // null terminating character. http://www.cplusplus.com/reference/cstdio/snprintf/
-  int buff_size = rcutils_snprintf(NULL, 0, format_str, current_time);
-  if (buff_size < 0) {
-    char errmsg[200];
-    rcutils_strerror(errmsg, sizeof(errmsg));
-    throw std::runtime_error(errmsg);
-  }
-
-  // Increase by one for null-terminating character
-  ++buff_size;
-  char * buffer = new char[buff_size];
-
-  // Write to the string. buffer size must accommodate the null-terminating character
-  int bytes_written = rcutils_snprintf(buffer, buff_size, format_str, current_time);
-  if (bytes_written < 0) {
-    delete[] buffer;
-    char errmsg[200];
-    rcutils_strerror(errmsg, sizeof(errmsg));
-    throw std::runtime_error(errmsg);
-  }
-  std::string result = std::string(buffer);
-  delete[] buffer;
-  return result;
+  std::cout << "displayTimePoint" << std::endl;
+  return std::to_string(stamp.time_since_epoch().count()/1e9);
 }
