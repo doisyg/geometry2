@@ -346,6 +346,8 @@ public:
 
   void add(const MEvent & evt)
   {
+    std::cout << "Fct size: " << messages_.size() << " time msg :" << std::to_string(evt.getReceiptTime().seconds()) << std::endl;
+
     if (target_frames_.empty()) {
       return;
     }
@@ -407,17 +409,21 @@ public:
         messageDropped(front.event, filter_failure_reasons::QueueFull);
 
         messages_.pop_front();
+        std::cout << "Drop (queue full) size: " << messages_.size() << std::endl;
       }
 
       // Add the message to our list
       info.event = evt;
       messages_.push_back(info);
+      std::cout << "push_back size: " << messages_.size() << std::endl;
     }
 
     TF2_ROS_MESSAGEFILTER_DEBUG(
       "Added message in frame %s at time %.3f, count now %d",
       frame_id.c_str(), stamp.seconds(), messages_.size());
     ++incoming_message_count_;
+
+    std::cout << "buffer_timeout_.count() " << buffer_timeout_.count() << std::endl;
 
     for (const auto & param : wait_params) {
       const auto & handle = std::get<0>(param);
@@ -480,6 +486,7 @@ private:
 
   void transformReadyCallback(const tf2_ros::TransformStampedFuture & future, const uint64_t handle)
   {
+    //std::cout << "transformReadyCallback time " << future.get().header.stamp.sec + future.get().header.stamp.nanosec/1e9 << std::endl;
     namespace mt = message_filters::message_traits;
 
     MEvent saved_event;
@@ -502,6 +509,7 @@ private:
           if (info.success_count >= expected_success_count_) {
             saved_event = msg_it->event;
             messages_.erase(msg_it);
+            std::cout << "erase size: " << messages_.size() << std::endl;
             event_found = true;
           }
           break;

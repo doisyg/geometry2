@@ -36,6 +36,6 @@
 
 std::string tf2::displayTimePoint(const tf2::TimePoint & stamp)
 {
-  std::cout << "displayTimePoint" << std::endl;
+  //std::cout << "displayTimePoint" << std::endl;
   return std::to_string(stamp.time_since_epoch().count()/1e9);
 }

@@ -187,7 +187,7 @@ TEST(tf2_ros_message_filter, multiple_frames_and_time_tolerance)
     rclcpp::spin_some(node);
     loop_rate.sleep();
     RCLCPP_INFO(node->get_logger(), "filter callback: trigger(%d)", filter_callback_fired);
-    if (filter_callback_fired > 5) {
+    if (filter_callback_fired > 50) {
       break;
     }
   }

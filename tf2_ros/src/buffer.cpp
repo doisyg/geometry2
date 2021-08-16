@@ -255,6 +255,7 @@ Buffer::waitForTransform(
     callback(future);
   } else {
     std::lock_guard<std::mutex> lock(timer_to_request_map_mutex_);
+    std::cout << "Wait for transform, Create timer with timeout: " << std::to_string(timeout.count()/1e9) << std::endl;
     auto timer_handle = timer_interface_->createTimer(
       clock_,
       timeout,
@@ -273,6 +274,7 @@ Buffer::timerCallback(
   TransformStampedFuture future,
   TransformReadyCallback callback)
 {
+  std::cout << "timerCallback" << std::endl;
   bool timer_is_valid = false;
   tf2::TransformableRequestHandle request_handle = 0u;
   {
